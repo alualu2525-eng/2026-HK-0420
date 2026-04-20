@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026港澳吃喝之小馬哥首航</title>
+
+<script src="https://unpkg.com/vue@3"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-black text-white">
+
+<div id="app" class="max-w-md mx-auto p-4">
+
+<h1 class="text-xl font-bold text-center mb-4">
+2026港澳吃喝之小馬哥首航
+</h1>
+
+<!-- 分頁 -->
+<div class="flex gap-2 mb-4">
+<button @click="tab='day1'" class="flex-1 bg-blue-500 p-2 rounded">Day1</button>
+<button @click="tab='day2'" class="flex-1 bg-blue-500 p-2 rounded">Day2</button>
+<button @click="tab='day3'" class="flex-1 bg-blue-500 p-2 rounded">Day3</button>
+</div>
+
+<!-- Day1 -->
+<div v-if="tab==='day1'" class="space-y-2 text-sm">
+<p>✈️ 13:30 抵達香港</p>
+<p>🚌 S1 → 東薈城 ($3.7 / 15分)</p>
+<p>🛍️ Outlet 購物 COACH</p>
+<p>🚇 葵興站 → 飯店</p>
+<p>🍖 竺扶大班燒味</p>
+<p>🚋 叮叮車 → 半山扶梯</p>
+<p>🌃 山頂纜車夜景</p>
+<p>🍡 佳佳甜品</p>
+</div>
+
+<!-- Day2 -->
+<div v-if="tab==='day2'" class="space-y-2 text-sm">
+<p>🍽️ 一點心</p>
+<p>🛍️ 上環：兆成行 → 曲奇 → 蘭芳園</p>
+<p>🚌 港澳快線 → 澳門</p>
+<p>🏨 利澳酒店</p>
+<p>🏛️ 大三巴 + 最香餅家</p>
+<p>🎡 永利皇宮纜車</p>
+</div>
+
+<!-- Day3 -->
+<div v-if="tab==='day3'" class="space-y-2 text-sm">
+<p>☕ 世紀咖啡</p>
+<p>🥧 蛋塔</p>
+<p>🛍️ 官也街 + COACH</p>
+<p>🏙️ 威尼斯人 / 倫敦人</p>
+<p>✈️ 回程</p>
+</div>
+
+</div>
+
+<script>
+Vue.createApp({
+data(){
+return{
+tab:'day1'
+}
+}
+}).mount('#app')
+</script>
+
+</body>
+</html>
