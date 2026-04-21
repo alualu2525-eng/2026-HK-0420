@@ -1,71 +1,137 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026港澳吃喝之小馬哥首航</title>
 
-<script src="https://unpkg.com/vue@3"></script>
+<title>港澳吃喝團</title>
+
+<link rel="manifest" href="manifest.json">
+
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/vue@3"></script>
 
+<style>
+body {
+  background: linear-gradient(to bottom, #0f172a, #1e293b);
+  color: white;
+}
+.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+}
+</style>
 </head>
 
-<body class="bg-black text-white">
+<body>
 
-<div id="app" class="max-w-md mx-auto p-4">
+<div id="app" class="max-w-md mx-auto pb-24">
 
-<h1 class="text-xl font-bold text-center mb-4">
-2026港澳吃喝之小馬哥首航
-</h1>
-
-<!-- 分頁 -->
-<div class="flex gap-2 mb-4">
-<button @click="tab='day1'" class="flex-1 bg-blue-500 p-2 rounded">Day1</button>
-<button @click="tab='day2'" class="flex-1 bg-blue-500 p-2 rounded">Day2</button>
-<button @click="tab='day3'" class="flex-1 bg-blue-500 p-2 rounded">Day3</button>
+<!-- HEADER -->
+<div class="h-56 bg-cover flex items-end p-4"
+style="background-image:url('https://images.unsplash.com/photo-1505761671935-60b3a7427bad')">
+  <div>
+    <h1 class="text-xl font-bold">港澳吃喝團</h1>
+    <p class="text-sm">導航版 App</p>
+  </div>
 </div>
 
-<!-- Day1 -->
-<div v-if="tab==='day1'" class="space-y-2 text-sm">
-<p>✈️ 13:30 抵達香港</p>
-<p>🚌 S1 → 東薈城 ($3.7 / 15分)</p>
-<p>🛍️ Outlet 購物 COACH</p>
-<p>🚇 葵興站 → 飯店</p>
-<p>🍖 竺扶大班燒味</p>
-<p>🚋 叮叮車 → 半山扶梯</p>
-<p>🌃 山頂纜車夜景</p>
-<p>🍡 佳佳甜品</p>
+<!-- GPS -->
+<div class="p-4 text-sm text-blue-300">
+📍 目前位置：{{ location }}
 </div>
 
-<!-- Day2 -->
-<div v-if="tab==='day2'" class="space-y-2 text-sm">
-<p>🍽️ 一點心</p>
-<p>🛍️ 上環：兆成行 → 曲奇 → 蘭芳園</p>
-<p>🚌 港澳快線 → 澳門</p>
-<p>🏨 利澳酒店</p>
-<p>🏛️ 大三巴 + 最香餅家</p>
-<p>🎡 永利皇宮纜車</p>
+<!-- 行程 -->
+<div class="p-4 space-y-4">
+
+<div v-for="spot in spots" class="card p-3 rounded-xl">
+
+  <div class="font-bold">{{ spot.name }}</div>
+  <div class="text-sm text-gray-300">{{ spot.desc }}</div>
+
+  <div class="flex gap-2 mt-2">
+
+    <!-- Google導航 -->
+    <button @click="navigate(spot.lat, spot.lng)"
+    class="bg-blue-400 px-3 py-1 rounded">
+    🧭 導航
+    </button>
+
+    <!-- 目前位置導航 -->
+    <button @click="route(spot.lat, spot.lng)"
+    class="bg-green-400 px-3 py-1 rounded">
+    🚀 從我這出發
+    </button>
+
+  </div>
+
 </div>
 
-<!-- Day3 -->
-<div v-if="tab==='day3'" class="space-y-2 text-sm">
-<p>☕ 世紀咖啡</p>
-<p>🥧 蛋塔</p>
-<p>🛍️ 官也街 + COACH</p>
-<p>🏙️ 威尼斯人 / 倫敦人</p>
-<p>✈️ 回程</p>
 </div>
 
 </div>
 
 <script>
-Vue.createApp({
-data(){
-return{
-tab:'day1'
+const app = Vue.createApp({
+data() {
+return {
+location: "定位中...",
+userLat: null,
+userLng: null,
+
+spots: [
+{ name:"東薈城", lat:22.289, lng:113.939, desc:"機場購物" },
+{ name:"葵興站", lat:22.363, lng:114.131, desc:"轉車點" },
+{ name:"灣仔燒味", lat:22.277, lng:114.172, desc:"晚餐" },
+{ name:"山頂纜車", lat:22.277, lng:114.158, desc:"夜景" },
+{ name:"天星碼頭", lat:22.293, lng:114.168, desc:"搭船" },
+{ name:"佳佳甜品", lat:22.304, lng:114.171, desc:"甜品" },
+
+{ name:"一點心", lat:22.324, lng:114.168, desc:"早餐" },
+{ name:"利澳酒店", lat:22.188, lng:113.551, desc:"住宿" },
+{ name:"大三巴", lat:22.197, lng:113.541, desc:"景點" },
+{ name:"新濠影匯", lat:22.149, lng:113.56, desc:"摩天輪" },
+{ name:"永利皇宮", lat:22.148, lng:113.557, desc:"纜車" },
+{ name:"杏香園", lat:22.153, lng:113.557, desc:"甜品" },
+
+{ name:"世紀咖啡", lat:22.193, lng:113.54, desc:"早餐" },
+{ name:"威尼斯人", lat:22.149, lng:113.56, desc:"購物" },
+{ name:"澳門機場", lat:22.149, lng:113.591, desc:"回程" }
+]
 }
+},
+
+methods: {
+
+navigate(lat, lng){
+window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`)
+},
+
+route(lat, lng){
+window.open(`https://www.google.com/maps/dir/?api=1&origin=${this.userLat},${this.userLng}&destination=${lat},${lng}`)
 }
-}).mount('#app')
+
+},
+
+mounted(){
+
+if(navigator.geolocation){
+navigator.geolocation.getCurrentPosition(pos=>{
+this.userLat = pos.coords.latitude
+this.userLng = pos.coords.longitude
+this.location = this.userLat.toFixed(5)+","+this.userLng.toFixed(5)
+})
+}
+
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('service-worker.js')
+}
+
+}
+
+})
+
+app.mount('#app')
 </script>
 
 </body>
