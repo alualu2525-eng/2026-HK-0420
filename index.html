@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>港澳吃喝團</title>
+<title>AI導遊導航App</title>
 
 <link rel="manifest" href="manifest.json">
 
@@ -12,123 +12,136 @@
 <script src="https://unpkg.com/vue@3"></script>
 
 <style>
-body {
-  background: linear-gradient(to bottom, #0f172a, #1e293b);
-  color: white;
-}
-.card {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
-}
+body { background:#0f172a; color:white;}
+.card { background:rgba(255,255,255,0.08);}
 </style>
 </head>
 
 <body>
 
-<div id="app" class="max-w-md mx-auto pb-24">
+<div id="app" class="max-w-md mx-auto p-4">
 
-<!-- HEADER -->
-<div class="h-56 bg-cover flex items-end p-4"
-style="background-image:url('https://images.unsplash.com/photo-1505761671935-60b3a7427bad')">
-  <div>
-    <h1 class="text-xl font-bold">港澳吃喝團</h1>
-    <p class="text-sm">導航版 App</p>
-  </div>
+<h1 class="text-center font-bold mb-3">🤖 AI導遊</h1>
+
+<div class="card p-3 rounded-xl">
+
+<div class="text-sm mb-2">
+第 {{ step+1 }} / {{ steps.length }} 步
 </div>
 
-<!-- GPS -->
-<div class="p-4 text-sm text-blue-300">
-📍 目前位置：{{ location }}
+<div class="bg-gray-700 h-2 rounded mb-3">
+<div class="bg-green-400 h-2 rounded"
+:style="{width:((step+1)/steps.length*100)+'%'}"></div>
 </div>
 
-<!-- 行程 -->
-<div class="p-4 space-y-4">
+<div class="mb-3">
+{{ steps[step].text }}
+</div>
 
-<div v-for="spot in spots" class="card p-3 rounded-xl">
+<button @click="nav()" class="bg-blue-400 px-3 py-1 rounded">
+🧭 開導航
+</button>
 
-  <div class="font-bold">{{ spot.name }}</div>
-  <div class="text-sm text-gray-300">{{ spot.desc }}</div>
-
-  <div class="flex gap-2 mt-2">
-
-    <!-- Google導航 -->
-    <button @click="navigate(spot.lat, spot.lng)"
-    class="bg-blue-400 px-3 py-1 rounded">
-    🧭 導航
-    </button>
-
-    <!-- 目前位置導航 -->
-    <button @click="route(spot.lat, spot.lng)"
-    class="bg-green-400 px-3 py-1 rounded">
-    🚀 從我這出發
-    </button>
-
-  </div>
+<div class="flex justify-between mt-3">
+<button @click="prev" class="bg-gray-600 px-2 rounded">⬅️</button>
+<button @click="next" class="bg-gray-600 px-2 rounded">➡️</button>
+</div>
 
 </div>
 
+<div class="mt-4 text-xs text-blue-300">
+📍 目前位置：{{ userLat }}, {{ userLng }}
 </div>
 
 </div>
 
 <script>
 const app = Vue.createApp({
-data() {
-return {
-location: "定位中...",
-userLat: null,
-userLng: null,
+data(){
+return{
+step:0,
+userLat:null,
+userLng:null,
 
-spots: [
-{ name:"東薈城", lat:22.289, lng:113.939, desc:"機場購物" },
-{ name:"葵興站", lat:22.363, lng:114.131, desc:"轉車點" },
-{ name:"灣仔燒味", lat:22.277, lng:114.172, desc:"晚餐" },
-{ name:"山頂纜車", lat:22.277, lng:114.158, desc:"夜景" },
-{ name:"天星碼頭", lat:22.293, lng:114.168, desc:"搭船" },
-{ name:"佳佳甜品", lat:22.304, lng:114.171, desc:"甜品" },
-
-{ name:"一點心", lat:22.324, lng:114.168, desc:"早餐" },
-{ name:"利澳酒店", lat:22.188, lng:113.551, desc:"住宿" },
-{ name:"大三巴", lat:22.197, lng:113.541, desc:"景點" },
-{ name:"新濠影匯", lat:22.149, lng:113.56, desc:"摩天輪" },
-{ name:"永利皇宮", lat:22.148, lng:113.557, desc:"纜車" },
-{ name:"杏香園", lat:22.153, lng:113.557, desc:"甜品" },
-
-{ name:"世紀咖啡", lat:22.193, lng:113.54, desc:"早餐" },
-{ name:"威尼斯人", lat:22.149, lng:113.56, desc:"購物" },
-{ name:"澳門機場", lat:22.149, lng:113.591, desc:"回程" }
+steps:[
+{ text:"從灣仔A3出口出來直走", lat:22.277, lng:114.172 },
+{ text:"右轉進莊士敦道，看到電車軌道", lat:22.278, lng:114.17 },
+{ text:"搭叮叮車往西", lat:22.279, lng:114.168 },
+{ text:"在租庇利街下車", lat:22.282, lng:114.158 },
+{ text:"左轉步行2分鐘到半山扶梯", lat:22.283, lng:114.154 }
 ]
 }
 },
 
-methods: {
-
-navigate(lat, lng){
-window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`)
+methods:{
+next(){
+if(this.step < this.steps.length-1){
+this.step++
+this.speak()
+}
+},
+prev(){
+if(this.step>0) this.step--
 },
 
-route(lat, lng){
-window.open(`https://www.google.com/maps/dir/?api=1&origin=${this.userLat},${this.userLng}&destination=${lat},${lng}`)
+nav(){
+let s = this.steps[this.step]
+window.open(`https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}`)
+},
+
+// 🔊 語音
+speak(){
+let msg = new SpeechSynthesisUtterance(this.steps[this.step].text)
+msg.lang = "zh-TW"
+speechSynthesis.speak(msg)
+},
+
+// 📍 距離判斷
+checkDistance(){
+let s = this.steps[this.step]
+
+let d = this.getDistance(
+this.userLat, this.userLng,
+s.lat, s.lng
+)
+
+if(d < 50){ // 50公尺內
+this.next()
+}
+},
+
+// 距離公式
+getDistance(lat1, lon1, lat2, lon2){
+let R = 6371e3
+let φ1 = lat1*Math.PI/180
+let φ2 = lat2*Math.PI/180
+let Δφ = (lat2-lat1)*Math.PI/180
+let Δλ = (lon2-lon1)*Math.PI/180
+
+let a = Math.sin(Δφ/2)*Math.sin(Δφ/2)+
+Math.cos(φ1)*Math.cos(φ2)*
+Math.sin(Δλ/2)*Math.sin(Δλ/2)
+
+let c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))
+return R*c
 }
 
 },
 
 mounted(){
 
-if(navigator.geolocation){
-navigator.geolocation.getCurrentPosition(pos=>{
+// 初始語音
+this.speak()
+
+// GPS追蹤
+navigator.geolocation.watchPosition(pos=>{
 this.userLat = pos.coords.latitude
 this.userLng = pos.coords.longitude
-this.location = this.userLat.toFixed(5)+","+this.userLng.toFixed(5)
+
+this.checkDistance()
 })
-}
-
-if('serviceWorker' in navigator){
-navigator.serviceWorker.register('service-worker.js')
-}
 
 }
-
 })
 
 app.mount('#app')
