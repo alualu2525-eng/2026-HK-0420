@@ -1,15 +1,13 @@
-self.addEventListener('install', e => {
+self.addEventListener('install', e=>{
 e.waitUntil(
-caches.open('app').then(cache => {
-return cache.addAll(['./', './index.html'])
+caches.open('travel').then(cache=>{
+return cache.addAll(['./','./index.html'])
 })
 )
 })
 
-self.addEventListener('fetch', e => {
+self.addEventListener('fetch', e=>{
 e.respondWith(
-caches.match(e.request).then(res => {
-return res || fetch(e.request)
-})
+caches.match(e.request).then(r=>r||fetch(e.request))
 )
 })
