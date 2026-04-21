@@ -12,14 +12,14 @@
 <style>
 body{
   margin:0;
-  background:#0b1020;
+  background:#0b1220;
   color:white;
 }
 
 .app{
   max-width:420px;
   margin:auto;
-  padding-bottom:80px;
+  padding-bottom:40px;
 }
 
 .header{
@@ -29,23 +29,18 @@ body{
 
 .card{
   background:rgba(255,255,255,0.08);
-  border-radius:14px;
-  padding:12px;
-  margin-bottom:10px;
+  border-radius:16px;
+  padding:14px;
+  margin:10px;
 }
 
-.tabbar{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  max-width:420px;
-  margin:auto;
-  display:flex;
-  justify-content:space-around;
-  background:#0a0f1d;
-  padding:10px 0;
-  border-top:1px solid rgba(255,255,255,0.1);
+.btn{
+  background:#3b82f6;
+  padding:6px 10px;
+  border-radius:10px;
+  margin-top:6px;
+  display:inline-block;
+  font-size:12px;
 }
 </style>
 
@@ -57,189 +52,168 @@ body{
 
 <!-- HEADER -->
 <div class="header">
-<h1 class="text-lg font-bold">
-2026港澳吃喝團之小馬哥首航
-</h1>
+<h1 class="text-lg font-bold">2026港澳吃喝團之小馬哥首航</h1>
 <div class="text-sm text-gray-300">
 小馬哥・小村・陳RuRu・Ruby・妹妹
 </div>
 </div>
 
-<!-- ================= 1️⃣ 首頁 ================= -->
-<div v-if="tab===0" class="p-3">
-
-<div class="card text-center">
-✈️ 去程<br>
-HB703 ✈️ TPE → HKG<br>
-11:30 → 13:30
-</div>
-
-<div class="card text-center">
-✈️ 回程<br>
-JX206 ✈️ MFM → TPE<br>
-20:50 → 22:40
-</div>
-
-</div>
-
-<!-- ================= 2️⃣ 行程（白癡級導航） ================= -->
-<div v-if="tab===1" class="p-3 space-y-3">
-
+<!-- ================= DAY1 ================= -->
 <div class="card">
-📍 DAY1｜香港
+📍 DAY1｜2026/08/28 香港
 
-🚇 機場 → 東薈城
-👉 機場「地面運輸中心」
-👉 找 S1 巴士站
-👉 搭 S1 → 東薈城
+---
 
-🚶 東薈城 → 旭逸酒店
-👉 搭 E32 → 葵興站
-👉 出站找「7-11」
-👉 右轉直走 8 分鐘
-👉 看到「新葵興廣場」= 接駁點
-👉 搭酒店接駁車
+✈️ 13:30 香港機場抵達
+
+<button class="btn" @click="go('香港國際機場')">導航機場</button>
+
+---
+
+🚇 機場 → 東薈城  
+👉 找「地面運輸中心」  
+👉 S1巴士 → 東薈城
+
+<button class="btn" @click="go('東薈城 outlet')">導航東薈城</button>
+
+---
+
+🛍 15:00 東薈城購物
+
+---
+
+🚇 東薈城 → 旭逸酒店  
+👉 E32巴士 → 葵興站  
+👉 出站找7-11  
+👉 右轉直走8分鐘  
+👉 新葵興廣場搭接駁車
+
+<button class="btn" @click="go('旭逸酒店 荃灣')">導航酒店</button>
+
+---
+
+🍽 18:30 竺扶大班  
+👉 葵興 → 金鐘 → 灣仔A3出口  
+👉 莊士敦道 → 叮叮車站  
+👉 租庇利街下車  
+👉 直走扶梯
+
+<button class="btn" @click="go('竺扶大班燒味')">導航餐廳</button>
+
+---
+
+🚡 20:30 山頂纜車  
+👉 花園道上山  
+👉 山頂看夜景
+
+<button class="btn" @click="go('太平山頂')">導航山頂</button>
+
+---
+
+🚢 天星小輪  
+👉 中環碼頭 → 尖沙咀
+
+<button class="btn" @click="go('天星小輪 中環碼頭')">導航碼頭</button>
+
 </div>
 
+<!-- ================= DAY2 ================= -->
 <div class="card">
-🚇 旭逸 → 竺扶大班
+📍 DAY2｜2026/08/29 香港 → 澳門
 
-👉 葵興站上車（荃灣線）
-👉 金鐘站轉港島線
-👉 灣仔站 A3 出口
-👉 出站直走莊士敦道
-👉 找叮叮車站
-👉 搭往西行叮叮車
-👉 租庇利街下車
-👉 直走到半山扶梯
+---
+
+🚇 葵興 → 太子站  
+👉 C2出口  
+👉 上海街695號寄行李
+
+<button class="btn" @click="go('太子站')">導航太子站</button>
+
+---
+
+🍜 一點心  
+👉 太子站步行6分鐘
+
+<button class="btn" @click="go('一點心 太子')">導航餐廳</button>
+
+---
+
+🛍 上環購物  
+👉 兆成行 / 珍妮曲奇 / 蘭芳園
+
+<button class="btn" @click="go('蘭芳園 中環')">導航蘭芳園</button>
+
+---
+
+🚢 港澳快線  
+👉 太子 → 回力站
+
+<button class="btn" @click="go('澳門 回力酒店')">導航回力站</button>
+
+---
+
+🏨 利澳酒店  
+👉 回力 → 步行8分鐘
+
+<button class="btn" @click="go('利澳酒店 澳門')">導航酒店</button>
+
+---
+
+🏛 大三巴  
+👉 新馬路 → 噴水池 → 上坡
+
+<button class="btn" @click="go('大三巴牌坊')">導航大三巴</button>
+
+---
+
+🍧 最香餅家 → 禮記雪糕  
+👉 直走2分鐘
+
+<button class="btn" @click="go('禮記雪糕')">導航甜品</button>
+
+---
+
+🎡 威尼斯人 / 8字摩天輪  
+<button class="btn" @click="go('威尼斯人酒店')">導航威尼斯人</button>
+
 </div>
 
+<!-- ================= DAY3 ================= -->
 <div class="card">
-🚡 山頂 → 中環碼頭
+📍 DAY3｜2026/08/30 澳門 → 回程
 
-👉 山頂纜車下山
-👉 花園道出口出來
-👉 看到「聖約翰大廈」右轉
-👉 直走10分鐘
-👉 看到中環天星碼頭招牌
-👉 走樓梯下去
-👉 搭天星小輪
-</div>
+---
 
-<div class="card">
-📍 DAY2｜香港 → 澳門
+🍳 世紀咖啡早餐  
+<button class="btn" @click="go('世紀咖啡 澳門')">導航早餐</button>
 
-👉 葵興 → 太子站
-👉 C2出口出站
-👉 直走上海街
-👉 看到「695號A」寄行李
-👉 再走3分鐘到一點心
-</div>
+---
 
-<div class="card">
-🚢 太子 → 澳門
+🛍 官也街  
+<button class="btn" @click="go('官也街')">導航官也街</button>
 
-👉 上車點：上海街695號
-👉 搭港澳快線
-👉 回力站下車
-👉 出站右轉
-👉 直走看到「回力酒店」
-👉 走8分鐘到利澳酒店
-</div>
+---
 
-<div class="card">
-📍 DAY3｜澳門
+🏨 威尼斯人 / DFS  
+<button class="btn" @click="go('DFS 澳門')">導航購物</button>
 
-👉 利澳 → 大三巴
-👉 出門搭巴士往新馬路
-👉 下車看到噴水池
-👉 直走議事亭前地
-👉 再直走上坡＝大三巴
+---
 
-👉 大三巴 → 最香餅家
-👉 往下坡走2分鐘
+✈️ 19:30 澳門機場  
+<button class="btn" @click="go('澳門國際機場')">導航機場</button>
 
-👉 最香餅家 → 禮記雪糕
-👉 直走轉右巷子
-</div>
-
-</div>
-
-<!-- ================= 3️⃣ 資訊 ================= -->
-<div v-if="tab===2" class="p-3">
-
-<div class="card">
-🏨 旭逸酒店<br>
-葵涌圳邊街15-19號
-</div>
-
-<div class="card">
-🏨 利澳酒店<br>
-澳門新口岸
-</div>
-
-<div class="card">
-🚌 港澳快線<br>
-turbojet.com.hk
-</div>
-
-<div class="card">
-🚐 接駁車<br>
-hkmoexpress.gobybus.hk
-</div>
-
-</div>
-
-<!-- ================= 4️⃣ 行李 ================= -->
-<div v-if="tab===3" class="p-3">
-
-<div class="card">👕 衣物（3天）</div>
-<div class="card">🧴 盥洗用品</div>
-<div class="card">🔌 充電器/行動電源</div>
-<div class="card">🧾 護照/機票</div>
-<div class="card">💰 港幣/澳門幣</div>
-
-</div>
-
-<!-- ================= 5️⃣ 叮嚀 ================= -->
-<div v-if="tab===4" class="p-3">
-
-<div class="card">
-🍽 香港先搶位再點餐
-</div>
-
-<div class="card">
-🚇 香港看出口字母（A/B/C）
-</div>
-
-<div class="card">
-🚌 澳門靠免費發財車
-</div>
-
-<div class="card">
-⚠️ 夜晚坡多注意走路
-</div>
-
-</div>
-
-</div>
-
-<!-- TAB -->
-<div class="tabbar">
-<button @click="tab=0">🏠</button>
-<button @click="tab=1">🧭</button>
-<button @click="tab=2">ℹ️</button>
-<button @click="tab=3">🎒</button>
-<button @click="tab=4">🧠</button>
 </div>
 
 </div>
 
 <script>
 Vue.createApp({
-data(){
-return{
-tab:0
+methods:{
+go(place){
+window.open(
+"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(place),
+"_blank"
+);
 }
 }
 }).mount('#app')
