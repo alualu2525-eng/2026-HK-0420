@@ -4,202 +4,185 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>2026港澳吃喝團</title>
+<title>2026港澳吃喝團之小馬哥首航</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/vue@3"></script>
 
-<link rel="manifest" href="manifest.json">
-
 <style>
 body{
-  background: radial-gradient(circle at top,#0f172a,#020617);
+  background:linear-gradient(to bottom,#0f172a,#020617);
   color:white;
+  margin:0;
 }
+
+/* 容器 */
+.app{
+  max-width:420px;
+  margin:auto;
+  padding-bottom:90px;
+}
+
+/* 標題置中 */
+.header{
+  text-align:center;
+  padding:16px 12px;
+}
+
 .card{
   background:rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-  border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:10px;
 }
+
+/* 分頁列（修正重點） */
 .tabbar{
   position:fixed;
   bottom:0;
-  width:100%;
+  left:0;
+  right:0;
   max-width:420px;
+  margin:auto;
+  display:flex;
+  justify-content:space-around;
+  padding:12px 0;
   background:#0b1220;
+  border-top:1px solid rgba(255,255,255,0.1);
+  z-index:999;
 }
 </style>
+
 </head>
 
 <body>
 
-<div id="app" class="max-w-md mx-auto pb-28">
+<div id="app" class="app">
 
-<!-- ================= HOME ================= -->
-<div v-if="tab===0" class="p-4 space-y-3">
+<!-- ================= HEADER ================= -->
+<div class="header">
 
-<h1 class="text-center text-lg font-bold">
+<h1 class="text-lg font-bold">
 2026港澳吃喝團之小馬哥首航
 </h1>
 
-<div class="text-center text-sm text-gray-300">
-小馬哥 · 小村 · 陳RuRu · Ruby · 妹妹
-</div>
-
-<!-- ✈️去程 -->
-<div class="card p-3 rounded-xl mt-3">
-<div class="font-bold">✈️ 去程登機證</div>
-<div>HB703 ✈️ TPE → HKG</div>
-<div>11:30 → 13:30</div>
-</div>
-
-<!-- ✈️回程 -->
-<div class="card p-3 rounded-xl">
-<div class="font-bold">✈️ 回程登機證</div>
-<div>JX206 ✈️ MFM → TPE</div>
-<div>20:50 → 22:40</div>
+<div class="text-sm text-gray-300 mt-1">
+小馬哥・小村・陳RuRu・Ruby・妹妹
 </div>
 
 </div>
 
-<!-- ================= 行程 ================= -->
-<div v-if="tab===1" class="p-4 space-y-3">
+<!-- ================= CONTENT ================= -->
+<div class="p-3">
 
-<!-- DAY 1 -->
-<div class="card p-3 rounded-xl">
-<div class="font-bold">📍 8/28 香港 Day1</div>
-<div>🌤 {{ weather.hk.temp }}°C｜體感 {{ weather.hk.feels }}°C</div>
-<div>☔ 降雨 {{ weather.hk.rain }}%</div>
+<!-- 🏠首頁 -->
+<div v-if="tab===0">
+
+<div class="card text-center">
+✈️ 去程航班<br>
+HB703 ✈️ TPE → HKG<br>
+11:30 ✈️ 13:30
 </div>
 
-<!-- DAY 2 -->
-<div class="card p-3 rounded-xl">
-<div class="font-bold">📍 8/29 香港→澳門</div>
-<div>🌤 {{ weather.hk.temp }}°C / {{ weather.mo.temp }}°C</div>
-</div>
-
-<!-- DAY 3 -->
-<div class="card p-3 rounded-xl">
-<div class="font-bold">📍 8/30 澳門</div>
-<div>🌤 {{ weather.mo.temp }}°C｜體感 {{ weather.mo.feels }}°C</div>
+<div class="card text-center">
+✈️ 回程航班<br>
+JX206 ✈️ MFM → TPE<br>
+20:50 ✈️ 22:40
 </div>
 
 </div>
 
-<!-- ================= 資訊 ================= -->
-<div v-if="tab===2" class="p-4 space-y-3">
+<!-- 📅行程 -->
+<div v-if="tab===1">
 
-<div class="card p-3 rounded-xl">
+<div class="card">
+📍 Day1 香港（2026/08/28）
+</div>
+
+<div class="card">
+📍 Day2 香港→澳門（2026/08/29）
+</div>
+
+<div class="card">
+📍 Day3 澳門（2026/08/30）
+</div>
+
+</div>
+
+<!-- ℹ️資訊 -->
+<div v-if="tab===2">
+
+<div class="card">
 🏨 旭逸酒店（荃灣）<br>
-📍 葵涌圳邊街15-19號
+葵涌圳邊街15-19號
 </div>
 
-<div class="card p-3 rounded-xl">
+<div class="card">
 🏨 利澳酒店（澳門）<br>
-📍 新口岸高美士街
+新口岸高美士街
 </div>
 
-<div class="card p-3 rounded-xl">
-🚐 旭逸接駁車<br>
-<a class="text-blue-300" href="https://hkmoexpress.gobybus.hk/" target="_blank">
+<div class="card">
+🚐 接駁車<br>
 https://hkmoexpress.gobybus.hk/
-</a>
 </div>
 
-<div class="card p-3 rounded-xl">
+<div class="card">
 🚌 港澳快線<br>
-<a class="text-blue-300" href="https://www.turbojet.com.hk" target="_blank">
 https://www.turbojet.com.hk
-</a>
 </div>
 
-<div class="card p-3 rounded-xl">
+<div class="card">
 🕒 營業時間<br>
-• 一點心 10:00–22:00<br>
-• 佳佳甜品 12:00–03:30<br>
-• 大三巴 24H<br>
-• 威尼斯人 10:00–23:00
+大三巴：24H<br>
+一點心：10:00–22:00<br>
+佳佳甜品：12:00–03:30
 </div>
 
 </div>
 
-<!-- ================= 行李 ================= -->
-<div v-if="tab===3" class="p-4 space-y-3">
+<!-- 🎒行李 -->
+<div v-if="tab===3">
 
-<div class="card p-3 rounded-xl">
-👕 衣物<br>
-• 上衣×3 / 褲×2<br>
-• 外套（冷氣）<br>
-• 睡衣
+<div class="card">
+👕 衣物：上衣×3 / 褲×2 / 外套
 </div>
 
-<div class="card p-3 rounded-xl">
-🧴 清潔保養<br>
-• 牙刷牙膏<br>
-• 洗面乳<br>
-• 防曬乳<br>
-• 保養品
+<div class="card">
+🧴 清潔：牙刷 / 洗面乳 / 防曬
 </div>
 
-<div class="card p-3 rounded-xl">
-🔌 電子<br>
-• 充電器<br>
-• 行動電源<br>
-• Type-C / Lightning
+<div class="card">
+🔌 電子：充電器 / 行動電源
 </div>
 
-<div class="card p-3 rounded-xl">
-🧾 文件<br>
-• 護照<br>
-• 機票<br>
-• 酒店訂單
+<div class="card">
+🧾 文件：護照 / 機票 / 訂房
 </div>
 
-<div class="card p-3 rounded-xl">
-💰 金錢<br>
-• 港幣<br>
-• 澳門幣<br>
-• 信用卡
-</div>
-
-<div class="card p-3 rounded-xl">
-💊 常備藥<br>
-• 止痛藥<br>
-• 腸胃藥<br>
-• 暈車藥
+<div class="card">
+💰 金錢：港幣 / 澳門幣 / 信用卡
 </div>
 
 </div>
 
-<!-- ================= 大師叮嚀 ================= -->
-<div v-if="tab===4" class="p-4 space-y-3">
+<!-- 🧠叮嚀 -->
+<div v-if="tab===4">
 
-<div class="card p-3 rounded-xl">
-🍽 用餐文化<br>
-• 茶餐廳先找位再點餐<br>
-• 茶位費HK$2–5<br>
-• 不收小費
+<div class="card">
+🍽 用餐：茶餐廳先找位再點餐
 </div>
 
-<div class="card p-3 rounded-xl">
-🚇 交通技巧<br>
-• 香港：地鐵最穩<br>
-• 澳門：發財車免費<br>
-• 叮叮車下車付款
+<div class="card">
+🚇 交通：香港地鐵 / 澳門發財車
 </div>
 
-<div class="card p-3 rounded-xl">
-⚠️ 注意事項<br>
-• 香港出口很多（看A/B/C）<br>
-• 澳門步行坡多<br>
-• 夜間注意末班車
+<div class="card">
+⚠️ 注意：出口很多看A/B/C
 </div>
 
-<div class="card p-3 rounded-xl">
-💡 隱藏攻略<br>
-• 威尼斯人免費冷氣休息<br>
-• 山頂夜景比白天好<br>
-• 澳門飯店可寄行李
+<div class="card">
+💡 技巧：威尼斯人很冷記得外套
 </div>
 
 </div>
@@ -207,7 +190,7 @@ https://www.turbojet.com.hk
 </div>
 
 <!-- ================= TAB BAR ================= -->
-<div class="tabbar flex justify-around p-3 text-sm">
+<div class="tabbar">
 
 <button @click="tab=0">🏠</button>
 <button @click="tab=1">📅</button>
@@ -223,12 +206,7 @@ https://www.turbojet.com.hk
 Vue.createApp({
 data(){
 return{
-tab:0,
-
-weather:{
-hk:{temp:28,feels:31,rain:20},
-mo:{temp:29,feels:33,rain:30}
-}
+tab:0
 }
 }
 }).mount('#app')
