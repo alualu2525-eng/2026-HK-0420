@@ -4,147 +4,234 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI導遊導航App</title>
-
-<link rel="manifest" href="manifest.json">
+<title>2026港澳吃喝團</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/vue@3"></script>
 
+<link rel="manifest" href="manifest.json">
+
 <style>
-body { background:#0f172a; color:white;}
-.card { background:rgba(255,255,255,0.08);}
+body{
+  background: radial-gradient(circle at top,#0f172a,#020617);
+  color:white;
+}
+.card{
+  background:rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border:1px solid rgba(255,255,255,0.1);
+}
+.tabbar{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  max-width:420px;
+  background:#0b1220;
+}
 </style>
 </head>
 
 <body>
 
-<div id="app" class="max-w-md mx-auto p-4">
+<div id="app" class="max-w-md mx-auto pb-28">
 
-<h1 class="text-center font-bold mb-3">🤖 AI導遊</h1>
+<!-- ================= HOME ================= -->
+<div v-if="tab===0" class="p-4 space-y-3">
+
+<h1 class="text-center text-lg font-bold">
+2026港澳吃喝團之小馬哥首航
+</h1>
+
+<div class="text-center text-sm text-gray-300">
+小馬哥 · 小村 · 陳RuRu · Ruby · 妹妹
+</div>
+
+<!-- ✈️去程 -->
+<div class="card p-3 rounded-xl mt-3">
+<div class="font-bold">✈️ 去程登機證</div>
+<div>HB703 ✈️ TPE → HKG</div>
+<div>11:30 → 13:30</div>
+</div>
+
+<!-- ✈️回程 -->
+<div class="card p-3 rounded-xl">
+<div class="font-bold">✈️ 回程登機證</div>
+<div>JX206 ✈️ MFM → TPE</div>
+<div>20:50 → 22:40</div>
+</div>
+
+</div>
+
+<!-- ================= 行程 ================= -->
+<div v-if="tab===1" class="p-4 space-y-3">
+
+<!-- DAY 1 -->
+<div class="card p-3 rounded-xl">
+<div class="font-bold">📍 8/28 香港 Day1</div>
+<div>🌤 {{ weather.hk.temp }}°C｜體感 {{ weather.hk.feels }}°C</div>
+<div>☔ 降雨 {{ weather.hk.rain }}%</div>
+</div>
+
+<!-- DAY 2 -->
+<div class="card p-3 rounded-xl">
+<div class="font-bold">📍 8/29 香港→澳門</div>
+<div>🌤 {{ weather.hk.temp }}°C / {{ weather.mo.temp }}°C</div>
+</div>
+
+<!-- DAY 3 -->
+<div class="card p-3 rounded-xl">
+<div class="font-bold">📍 8/30 澳門</div>
+<div>🌤 {{ weather.mo.temp }}°C｜體感 {{ weather.mo.feels }}°C</div>
+</div>
+
+</div>
+
+<!-- ================= 資訊 ================= -->
+<div v-if="tab===2" class="p-4 space-y-3">
 
 <div class="card p-3 rounded-xl">
-
-<div class="text-sm mb-2">
-第 {{ step+1 }} / {{ steps.length }} 步
+🏨 旭逸酒店（荃灣）<br>
+📍 葵涌圳邊街15-19號
 </div>
 
-<div class="bg-gray-700 h-2 rounded mb-3">
-<div class="bg-green-400 h-2 rounded"
-:style="{width:((step+1)/steps.length*100)+'%'}"></div>
+<div class="card p-3 rounded-xl">
+🏨 利澳酒店（澳門）<br>
+📍 新口岸高美士街
 </div>
 
-<div class="mb-3">
-{{ steps[step].text }}
+<div class="card p-3 rounded-xl">
+🚐 旭逸接駁車<br>
+<a class="text-blue-300" href="https://hkmoexpress.gobybus.hk/" target="_blank">
+https://hkmoexpress.gobybus.hk/
+</a>
 </div>
 
-<button @click="nav()" class="bg-blue-400 px-3 py-1 rounded">
-🧭 開導航
-</button>
+<div class="card p-3 rounded-xl">
+🚌 港澳快線<br>
+<a class="text-blue-300" href="https://www.turbojet.com.hk" target="_blank">
+https://www.turbojet.com.hk
+</a>
+</div>
 
-<div class="flex justify-between mt-3">
-<button @click="prev" class="bg-gray-600 px-2 rounded">⬅️</button>
-<button @click="next" class="bg-gray-600 px-2 rounded">➡️</button>
+<div class="card p-3 rounded-xl">
+🕒 營業時間<br>
+• 一點心 10:00–22:00<br>
+• 佳佳甜品 12:00–03:30<br>
+• 大三巴 24H<br>
+• 威尼斯人 10:00–23:00
 </div>
 
 </div>
 
-<div class="mt-4 text-xs text-blue-300">
-📍 目前位置：{{ userLat }}, {{ userLng }}
+<!-- ================= 行李 ================= -->
+<div v-if="tab===3" class="p-4 space-y-3">
+
+<div class="card p-3 rounded-xl">
+👕 衣物<br>
+• 上衣×3 / 褲×2<br>
+• 外套（冷氣）<br>
+• 睡衣
+</div>
+
+<div class="card p-3 rounded-xl">
+🧴 清潔保養<br>
+• 牙刷牙膏<br>
+• 洗面乳<br>
+• 防曬乳<br>
+• 保養品
+</div>
+
+<div class="card p-3 rounded-xl">
+🔌 電子<br>
+• 充電器<br>
+• 行動電源<br>
+• Type-C / Lightning
+</div>
+
+<div class="card p-3 rounded-xl">
+🧾 文件<br>
+• 護照<br>
+• 機票<br>
+• 酒店訂單
+</div>
+
+<div class="card p-3 rounded-xl">
+💰 金錢<br>
+• 港幣<br>
+• 澳門幣<br>
+• 信用卡
+</div>
+
+<div class="card p-3 rounded-xl">
+💊 常備藥<br>
+• 止痛藥<br>
+• 腸胃藥<br>
+• 暈車藥
+</div>
+
+</div>
+
+<!-- ================= 大師叮嚀 ================= -->
+<div v-if="tab===4" class="p-4 space-y-3">
+
+<div class="card p-3 rounded-xl">
+🍽 用餐文化<br>
+• 茶餐廳先找位再點餐<br>
+• 茶位費HK$2–5<br>
+• 不收小費
+</div>
+
+<div class="card p-3 rounded-xl">
+🚇 交通技巧<br>
+• 香港：地鐵最穩<br>
+• 澳門：發財車免費<br>
+• 叮叮車下車付款
+</div>
+
+<div class="card p-3 rounded-xl">
+⚠️ 注意事項<br>
+• 香港出口很多（看A/B/C）<br>
+• 澳門步行坡多<br>
+• 夜間注意末班車
+</div>
+
+<div class="card p-3 rounded-xl">
+💡 隱藏攻略<br>
+• 威尼斯人免費冷氣休息<br>
+• 山頂夜景比白天好<br>
+• 澳門飯店可寄行李
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= TAB BAR ================= -->
+<div class="tabbar flex justify-around p-3 text-sm">
+
+<button @click="tab=0">🏠</button>
+<button @click="tab=1">📅</button>
+<button @click="tab=2">ℹ️</button>
+<button @click="tab=3">🎒</button>
+<button @click="tab=4">🧠</button>
+
 </div>
 
 </div>
 
 <script>
-const app = Vue.createApp({
+Vue.createApp({
 data(){
 return{
-step:0,
-userLat:null,
-userLng:null,
+tab:0,
 
-steps:[
-{ text:"從灣仔A3出口出來直走", lat:22.277, lng:114.172 },
-{ text:"右轉進莊士敦道，看到電車軌道", lat:22.278, lng:114.17 },
-{ text:"搭叮叮車往西", lat:22.279, lng:114.168 },
-{ text:"在租庇利街下車", lat:22.282, lng:114.158 },
-{ text:"左轉步行2分鐘到半山扶梯", lat:22.283, lng:114.154 }
-]
+weather:{
+hk:{temp:28,feels:31,rain:20},
+mo:{temp:29,feels:33,rain:30}
 }
-},
-
-methods:{
-next(){
-if(this.step < this.steps.length-1){
-this.step++
-this.speak()
 }
-},
-prev(){
-if(this.step>0) this.step--
-},
-
-nav(){
-let s = this.steps[this.step]
-window.open(`https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}`)
-},
-
-// 🔊 語音
-speak(){
-let msg = new SpeechSynthesisUtterance(this.steps[this.step].text)
-msg.lang = "zh-TW"
-speechSynthesis.speak(msg)
-},
-
-// 📍 距離判斷
-checkDistance(){
-let s = this.steps[this.step]
-
-let d = this.getDistance(
-this.userLat, this.userLng,
-s.lat, s.lng
-)
-
-if(d < 50){ // 50公尺內
-this.next()
 }
-},
-
-// 距離公式
-getDistance(lat1, lon1, lat2, lon2){
-let R = 6371e3
-let φ1 = lat1*Math.PI/180
-let φ2 = lat2*Math.PI/180
-let Δφ = (lat2-lat1)*Math.PI/180
-let Δλ = (lon2-lon1)*Math.PI/180
-
-let a = Math.sin(Δφ/2)*Math.sin(Δφ/2)+
-Math.cos(φ1)*Math.cos(φ2)*
-Math.sin(Δλ/2)*Math.sin(Δλ/2)
-
-let c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))
-return R*c
-}
-
-},
-
-mounted(){
-
-// 初始語音
-this.speak()
-
-// GPS追蹤
-navigator.geolocation.watchPosition(pos=>{
-this.userLat = pos.coords.latitude
-this.userLng = pos.coords.longitude
-
-this.checkDistance()
-})
-
-}
-})
-
-app.mount('#app')
+}).mount('#app')
 </script>
 
 </body>
